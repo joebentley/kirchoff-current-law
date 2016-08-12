@@ -2,8 +2,8 @@
 
 var lib = {}
 
-;(function (self) {
-  self.runApp = function (canvasElem) {
+;(function (ns) {
+  ns.runApp = function (canvasElem) {
     var two = new Two({ width: 600, height: 600 }).appendTo(canvasElem)
 
     var circle = two.makeCircle(72, 100, 50)
