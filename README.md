@@ -4,7 +4,7 @@ This is a interactive visualisation of Kirchhoff's Current Law.
 
 ### TODO
 
-* Draw the junction (maybe in [two.js](http://jonobr1.github.io/two.js/))
+* Draw the junction in [two.js](http://jonobr1.github.io/two.js/)
 
 * Randomise the layout of the junction
 
