@@ -1,1 +1,1 @@
-# kirchoff-current-law
+# Kirchhoff's Current Law
