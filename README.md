@@ -2,6 +2,8 @@
 
 This is a interactive visualisation of [Kirchhoff's Current Law](https://en.wikipedia.org/wiki/Kirchhoff%27s_circuit_laws#Kirchhoff.27s_current_law_.28KCL.29).
 
+[View on rawgit :sushi:](https://rawgit.com/joebentley/kirchoff-current-law/master/index.html)
+
 ### TODO
 
 * Draw the junction in [two.js](http://jonobr1.github.io/two.js/)
