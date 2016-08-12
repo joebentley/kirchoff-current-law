@@ -17,3 +17,9 @@ a {
 a:hover {
   color: #ff0000
 }
+
+#diagramContainer {
+  width: 600px;
+  height: 600px;
+  text-align: center;
+}
