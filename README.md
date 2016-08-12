@@ -1,4 +1,4 @@
-# Kirchhoff's Current Law
+# Kirchhoff's Current Law :crystal_ball:
 
 This is a interactive visualisation of Kirchhoff's Current Law.
 
