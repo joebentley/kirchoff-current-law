@@ -21,5 +21,9 @@ a:hover {
 #diagramContainer {
   width: 600px;
   height: 600px;
-  text-align: center;
+  margin: 0 auto;
+  padding-top: 100px;
+}
+.my-class {
+  display: none;
 }
