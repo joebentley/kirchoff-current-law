@@ -1,4 +1,4 @@
-/* globals Two $ */
+/* globals Two $ MathJax */
 
 var lib = {}
 
@@ -54,11 +54,7 @@ var lib = {}
     return arrowhead
   }
 
-  ns.runApp = function (canvasElem) {
-    var width1 = 650
-    var height1 = 650
-    var two = new Two({ type: Two.Types.svg, width: width1, height: height1 }).appendTo(canvasElem)
-
+  ns.drawCircuit = function (two) {
     /* Make 6 lines for branches. These must insersect at a point*/
 
     two.makeLine(0, 0, two.width / 2, two.height / 2)
@@ -69,7 +65,7 @@ var lib = {}
 
     two.makeLine(two.width / 2, two.height / 2, two.width, two.height / 2)
 
-    two.makeLine(width1 / 2, 0, two.width / 2, two.height / 2)
+    two.makeLine(two.width / 2, 0, two.width / 2, two.height / 2)
 
     two.makeLine(two.width / 2, two.height, two.width / 2, two.height / 2)
 
@@ -152,5 +148,76 @@ var lib = {}
 
     $('#labelI6').append(this.circuit.I6.toPrecision(2))
 
+    two.update()
+
+    // Refresh typsetting
+    MathJax.Hub.Queue(['Typeset', MathJax.Hub, 'Kirchhoff Current Law'])
+  }
+
+  ns.redrawLabels = function () {
+    // Edit MathJax elements directly to update values without having to re-render mathjax
+    $('#labelI1 .mjx-mrow > .mjx-mn > .mjx-char').html(this.circuit.I1.toPrecision(2))
+    $('#labelI2 .mjx-mrow > .mjx-mn > .mjx-char').html(this.circuit.I2.toPrecision(2))
+    $('#labelI3 .mjx-mrow > .mjx-mn > .mjx-char').html(this.circuit.I3.toPrecision(2))
+    $('#labelI4 .mjx-mrow > .mjx-mn > .mjx-char').html(this.circuit.I4.toPrecision(2))
+    $('#labelI5 .mjx-mrow > .mjx-mn > .mjx-char').html(this.circuit.I5.toPrecision(2))
+    $('#labelI6 .mjx-mrow > .mjx-mn > .mjx-char').html(this.circuit.I6.toPrecision(2))
+  }
+
+  ns.runApp = function (canvasContainer) {
+    this.canvasContainer = canvasContainer
+
+    // Make a new circuit
+    this.circuit = ns.Circuit(4, 5, 6, 5, 4)
+
+    var width1 = 650
+    var height1 = 650
+    var two = new Two({ type: Two.Types.svg, width: width1, height: height1 }).appendTo(canvasContainer)
+
+    ns.drawCircuit(two)
+
+    // Setup event handlers for resistors
+    var self = this
+
+    $('#inputI1').on('input', function () {
+      if (!isNaN(this.value) && this.value !== '') {
+        self.circuit.I1 = Number(this.value)
+        self.circuit.update()
+        // Redraw labels
+        ns.redrawLabels()
+      }
+    })
+    $('#inputI2').on('input', function () {
+      if (!isNaN(this.value) && this.value !== '') {
+        self.circuit.I2 = Number(this.value)
+        self.circuit.update()
+        // Redraw labels
+        ns.redrawLabels()
+      }
+    })
+    $('#inputI3').on('input', function () {
+      if (!isNaN(this.value) && this.value !== '') {
+        self.circuit.I3 = Number(this.value)
+        self.circuit.update()
+        // Redraw labels
+        ns.redrawLabels()
+      }
+    })
+    $('#inputI4').on('input', function () {
+      if (!isNaN(this.value) && this.value !== '') {
+        self.circuit.I4 = Number(this.value)
+        self.circuit.update()
+        // Redraw labels
+        ns.redrawLabels()
+      }
+    })
+    $('#inputI5').on('input', function () {
+      if (!isNaN(this.value) && this.value !== '') {
+        self.circuit.I5 = Number(this.value)
+        self.circuit.update()
+        // Redraw labels
+        ns.redrawLabels()
+      }
+    })
   }
 })(lib)
