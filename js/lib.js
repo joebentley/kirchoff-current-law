@@ -3,6 +3,27 @@
 var lib = {}
 
 ;(function (ns) {
+  ns.Circuit = function (I1, I2, I3, I4, I5) {
+    var circuit = {
+      I1: I1,
+      I2: I2,
+      I3: I3,
+      I4: I4,
+      I5: I5,
+
+      // Update circuit variables
+      update: function () {
+        circuit.I6 = circuit.I1 + circuit.I2 + circuit.I3 + circuit.I4 + circuit.I5
+
+        return circuit
+      }
+    }
+
+    circuit.update()
+
+    return circuit
+  }
+
   ns.makeArrowhead = function (two, length, x, y, theta, lwidth) {
     var horizontalArrowhead = two.makeLine(0, 0, length, 0)
 
@@ -32,6 +53,7 @@ var lib = {}
 
     return arrowhead
   }
+
   ns.runApp = function (canvasElem) {
     var width1 = 650
     var height1 = 650
@@ -109,5 +131,26 @@ var lib = {}
         })
       })(i)
     }
+
+    $('#labelI1').css('top', (two.height / 4.4) + 'px')
+                 .css('left', (two.width / 21.3) + 'px')
+
+    $('#labelI2').css('top', (two.height / 1.9) + 'px')
+                 .css('left', (two.width / 5) + 'px')
+
+    $('#labelI3').css('top', (3 * two.height / 4.04) + 'px')
+                 .css('left', (two.width / 21) + 'px')
+
+    $('#labelI4').css('top', (3 * two.height / 4.04) + 'px')
+                 .css('left', (two.width / 1.86) + 'px')
+
+    $('#labelI5').css('top', (two.height / 4.4) + 'px')
+                 .css('left', (two.width / 1.86) + 'px')
+
+    $('#labelI6').css('top', (two.height / 1.9) + 'px')
+                 .css('left', (3 * two.width / 4) + 'px')
+
+    $('#labelI6').append(this.circuit.I6.toPrecision(2))
+
   }
 })(lib)

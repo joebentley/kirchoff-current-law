@@ -23,9 +23,52 @@ a:hover {
   width: 650px;
   height: 650px;
   margin: 0 auto;
-  padding-top: 100px;
+  margin-top: 100px;
+  z-index: 0;
 }
 
 .arrows > path {
   stroke: red;
+}
+
+.inputI {
+  margin: 0 8px;
+  width: 3em;
+  position: relative;
+}
+
+.padTopAmp {
+  position: absolute;
+  margin-top: 1px;
+  display: inline;
+}
+
+.label {
+  position: absolute;
+  color: #000;
+  z-index: 1;
+}
+
+#labelI1 {
+  position: absolute;
+}
+
+#labelI2 {
+  position: absolute;
+}
+
+#labelI3 {
+  position: absolute;
+}
+
+#labelI4 {
+  position: absolute;
+}
+
+#labelI5 {
+  position: absolute;
+}
+
+#labelI6 {
+  position: absolute;
 }
