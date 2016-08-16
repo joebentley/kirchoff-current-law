@@ -128,6 +128,28 @@ var lib = {}
       })(i)
     }
 
+    $(this.canvasContainer).append('<div class="label" id="labelI1">\\(I_1 =\\)' +
+      '<input ID="inputI1" type="text" class="inputI" tabindex="1" value="' +
+      this.circuit.I1 + '"/>' + '<div class="padTopAmp">\\(A\\)</div></div>')
+
+    $(this.canvasContainer).append('<div class="label" id="labelI2">\\(I_2 =\\)' +
+      '<input ID="inputI2" type="text" class="inputI" tabindex="2" value="' +
+      this.circuit.I2 + '"/>' + '<div class="padTopAmp">\\(A\\)</div></div>')
+
+    $(this.canvasContainer).append('<div class="label" id="labelI3">\\(I_3 =\\)' +
+        '<input ID="inputI3" type="text" class="inputI" tabindex="3" value="' +
+        this.circuit.I3 + '"/>' + '<div class="padTopAmp">\\(A\\)</div></div>')
+
+    $(this.canvasContainer).append('<div class="label" id="labelI4">\\(I_4 =\\)' +
+          '<input ID="inputI4" type="text" class="inputI" tabindex="4" value="' +
+          this.circuit.I4 + '"/>' + '<div class="padTopAmp">\\(A\\)</div></div>')
+
+    $(this.canvasContainer).append('<div class="label" id="labelI5">\\(I_5 =\\)' +
+            '<input ID="inputI5" type="text" class="inputI" tabindex="5" value="' +
+            this.circuit.I5 + '"/>' + '<div class="padTopAmp">\\(A\\)</div></div>')
+
+    $(this.canvasContainer).append('<div class="label" id="labelI6">\\(I_6 = ' + this.circuit.I6 + 'A\\)</div>')
+
     $('#labelI1').css('top', (two.height / 4.4) + 'px')
                  .css('left', (two.width / 21.3) + 'px')
 
@@ -146,8 +168,6 @@ var lib = {}
     $('#labelI6').css('top', (two.height / 1.9) + 'px')
                  .css('left', (3 * two.width / 4) + 'px')
 
-    $('#labelI6').append(this.circuit.I6.toPrecision(2))
-
     two.update()
 
     // Refresh typsetting
@@ -156,11 +176,6 @@ var lib = {}
 
   ns.redrawLabels = function () {
     // Edit MathJax elements directly to update values without having to re-render mathjax
-    $('#labelI1 .mjx-mrow > .mjx-mn > .mjx-char').html(this.circuit.I1.toPrecision(2))
-    $('#labelI2 .mjx-mrow > .mjx-mn > .mjx-char').html(this.circuit.I2.toPrecision(2))
-    $('#labelI3 .mjx-mrow > .mjx-mn > .mjx-char').html(this.circuit.I3.toPrecision(2))
-    $('#labelI4 .mjx-mrow > .mjx-mn > .mjx-char').html(this.circuit.I4.toPrecision(2))
-    $('#labelI5 .mjx-mrow > .mjx-mn > .mjx-char').html(this.circuit.I5.toPrecision(2))
     $('#labelI6 .mjx-mrow > .mjx-mn > .mjx-char').html(this.circuit.I6.toPrecision(2))
   }
 
@@ -176,7 +191,7 @@ var lib = {}
 
     ns.drawCircuit(two)
 
-    // Setup event handlers for resistors
+    // Setup event handlers for currents
     var self = this
 
     $('#inputI1').on('input', function () {
