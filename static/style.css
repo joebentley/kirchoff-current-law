@@ -24,6 +24,7 @@ a:hover {
   margin: 0 auto;
   padding-top: 100px;
 }
-.my-class {
-  display: none;
+
+.arrows > path {
+  stroke: red;
 }

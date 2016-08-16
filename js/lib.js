@@ -13,6 +13,16 @@ var lib = {}
     arrowhead.translation.set(x, y)
 
     arrowhead.rotation = (Math.PI / 180) * theta
+
+    arrowhead.forward = 1
+
+    arrowhead.flip = function () {
+      arrowhead.rotation += Math.PI
+
+      arrowhead.forward *= -1
+    }
+
+    return arrowhead
   }
   ns.runApp = function (canvasElem) {
     var width1 = 400
@@ -21,7 +31,7 @@ var lib = {}
 
     /* Make 6 lines for branches. These must insersect at a point*/
 
-    var test = two.makeLine(0, 0, two.width / 2, two.height / 2)
+    two.makeLine(0, 0, two.width / 2, two.height / 2)
 
     two.makeLine(0, two.height / 2, two.width / 2, two.height / 2)
 
@@ -35,62 +45,62 @@ var lib = {}
 
     var arrowheadLength = 10
 
-    // northwest arrow:
-
-    ns.makeArrowhead(two, arrowheadLength, two.width / 4, two.height / 4, 0)
-
     // southeast arrow:
 
-    ns.makeArrowhead(two, arrowheadLength, two.width / 4, two.height / 4, 180)
+    var southeastArrow = ns.makeArrowhead(two, arrowheadLength, two.width / 4, two.height / 4, 180)
 
     // left east arrow
 
-    ns.makeArrowhead(two, arrowheadLength, two.width / 4, two.height / 2, 135)
-
-    // left west arrow
-
-    ns.makeArrowhead(two, arrowheadLength, two.width / 4, two.height / 2, 315)
-
-    // southwest arrow
-
-    ns.makeArrowhead(two, arrowheadLength, two.width / 4, 3 * two.height / 4, 270)
+    var leftEastArrow = ns.makeArrowhead(two, arrowheadLength, two.width / 4, two.height / 2, 135)
 
     // northeast arrow
 
-    ns.makeArrowhead(two, arrowheadLength, two.width / 4, 3 * two.height / 4, 90)
-
-    // north arrow top
-
-    ns.makeArrowhead(two, arrowheadLength, two.width / 2, two.height / 4, 45)
+    var northeastArrow = ns.makeArrowhead(two, arrowheadLength, two.width / 4, 3 * two.height / 4, 90)
 
     // south arrow top
 
-    ns.makeArrowhead(two, arrowheadLength, two.width / 2, two.height / 4, 225)
+    var southArrowTop = ns.makeArrowhead(two, arrowheadLength, two.width / 2, two.height / 4, 225)
 
     // north arrow bottom
 
-    ns.makeArrowhead(two, arrowheadLength, two.width / 2, 3 * two.height / 4, 45)
-
-    // south arrow bottom
-
-    ns.makeArrowhead(two, arrowheadLength, two.width / 2, 3 * two.height / 4, 225)
+    var northArrowBottom = ns.makeArrowhead(two, arrowheadLength, two.width / 2, 3 * two.height / 4, 45)
 
     // east arrow right
 
-    ns.makeArrowhead(two, arrowheadLength, 3 * two.width / 4, two.height / 2, 135)
-
-    // west arrow right
-
-    ns.makeArrowhead(two, arrowheadLength, 3 * two.width / 4, two.height / 2, 315)
+    var eastArrowRight = ns.makeArrowhead(two, arrowheadLength, 3 * two.width / 4, two.height / 2, 135)
 
     two.update()
 
-    $(test._renderer.elem).on('click', function () {
+    // hide all arrows pointing away from the node
 
-    })
+    var arrows =
+    [southeastArrow,
+    leftEastArrow,
+    northeastArrow,
+    northArrowBottom,
+    eastArrowRight,
+    southArrowTop]
 
-    /* test._renderer.elem.addEventListener('click', function () {
-      alert('you clicked javascript')
-    })*/
+    for (var i = 0; i < arrows.length; i++) {
+      var element = arrows[i]._renderer.elem
+
+      $(element).hover(
+        function () {
+          $(this).addClass('arrows > path')
+        }, function () {
+        $(this).removeClass('arrows > path')
+      }
+      )
+
+      ;(function (i) {
+        $(element).on('click', function () {
+          $(this).hide()
+          arrows[i].flip()
+          $(this).removeClass('arrows > path')
+          two.update()
+          $(this).show()
+        })
+      })(i)
+    }
   }
 })(lib)
