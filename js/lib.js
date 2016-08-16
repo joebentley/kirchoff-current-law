@@ -3,12 +3,20 @@
 var lib = {}
 
 ;(function (ns) {
-  ns.makeArrowhead = function (two, length, x, y, theta) {
+  ns.makeArrowhead = function (two, length, x, y, theta, lwidth) {
     var horizontalArrowhead = two.makeLine(0, 0, length, 0)
+
+    horizontalArrowhead.linewidth = lwidth
 
     var verticalArrowhead = two.makeLine(0, 0, 0, length)
 
-    var arrowhead = two.makeGroup(horizontalArrowhead, verticalArrowhead)
+    verticalArrowhead.linewidth = lwidth
+
+    var rectangle = two.makeRectangle(0, 0, 2 * length, 2 * length)
+
+    rectangle.opacity = 0
+
+    var arrowhead = two.makeGroup(horizontalArrowhead, verticalArrowhead, rectangle)
 
     arrowhead.translation.set(x, y)
 
@@ -25,8 +33,8 @@ var lib = {}
     return arrowhead
   }
   ns.runApp = function (canvasElem) {
-    var width1 = 400
-    var height1 = 400
+    var width1 = 650
+    var height1 = 650
     var two = new Two({ type: Two.Types.svg, width: width1, height: height1 }).appendTo(canvasElem)
 
     /* Make 6 lines for branches. These must insersect at a point*/
@@ -45,29 +53,31 @@ var lib = {}
 
     var arrowheadLength = 10
 
+    var linewidth = 1.5
+
     // southeast arrow:
 
-    var southeastArrow = ns.makeArrowhead(two, arrowheadLength, two.width / 4, two.height / 4, 180)
+    var southeastArrow = ns.makeArrowhead(two, arrowheadLength, two.width / 4, two.height / 4, 180, linewidth)
 
     // left east arrow
 
-    var leftEastArrow = ns.makeArrowhead(two, arrowheadLength, two.width / 4, two.height / 2, 135)
+    var leftEastArrow = ns.makeArrowhead(two, arrowheadLength, two.width / 4, two.height / 2, 135, linewidth)
 
     // northeast arrow
 
-    var northeastArrow = ns.makeArrowhead(two, arrowheadLength, two.width / 4, 3 * two.height / 4, 90)
+    var northeastArrow = ns.makeArrowhead(two, arrowheadLength, two.width / 4, 3 * two.height / 4, 90, linewidth)
 
     // south arrow top
 
-    var southArrowTop = ns.makeArrowhead(two, arrowheadLength, two.width / 2, two.height / 4, 225)
+    var southArrowTop = ns.makeArrowhead(two, arrowheadLength, two.width / 2, two.height / 4, 225, linewidth)
 
     // north arrow bottom
 
-    var northArrowBottom = ns.makeArrowhead(two, arrowheadLength, two.width / 2, 3 * two.height / 4, 45)
+    var northArrowBottom = ns.makeArrowhead(two, arrowheadLength, two.width / 2, 3 * two.height / 4, 45, linewidth)
 
     // east arrow right
 
-    var eastArrowRight = ns.makeArrowhead(two, arrowheadLength, 3 * two.width / 4, two.height / 2, 135)
+    var eastArrowRight = ns.makeArrowhead(two, arrowheadLength, 3 * two.width / 4, two.height / 2, 135, linewidth)
 
     two.update()
 
@@ -78,10 +88,10 @@ var lib = {}
     leftEastArrow,
     northeastArrow,
     northArrowBottom,
-    eastArrowRight,
-    southArrowTop]
+    southArrowTop,
+    eastArrowRight]
 
-    for (var i = 0; i < arrows.length; i++) {
+    for (var i = 0; i < arrows.length - 1; i++) {
       var element = arrows[i]._renderer.elem
 
       $(element).hover(
@@ -94,11 +104,8 @@ var lib = {}
 
       ;(function (i) {
         $(element).on('click', function () {
-          $(this).hide()
           arrows[i].flip()
-          $(this).removeClass('arrows > path')
           two.update()
-          $(this).show()
         })
       })(i)
     }

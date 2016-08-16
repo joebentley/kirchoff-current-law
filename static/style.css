@@ -19,8 +19,9 @@ a:hover {
 }
 
 #diagramContainer {
-  width: 600px;
-  height: 600px;
+  position: relative;
+  width: 650px;
+  height: 650px;
   margin: 0 auto;
   padding-top: 100px;
 }
