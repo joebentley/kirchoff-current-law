@@ -5,15 +5,22 @@ var lib = {}
 ;(function (ns) {
   ns.Circuit = function (I1, I2, I3, I4, I5) {
     var circuit = {
-      I1: I1,
-      I2: I2,
-      I3: I3,
-      I4: I4,
-      I5: I5,
+      currents: [
+        I1,
+        I2,
+        I3,
+        I4,
+        I5,
+        0
+      ],
 
       // Update circuit variables
       update: function () {
-        circuit.I6 = circuit.I1 + circuit.I2 + circuit.I3 + circuit.I4 + circuit.I5
+        this.currents[5] = 0
+
+        for (var i = 0; i < this.currents.length - 1; i++) {
+          this.currents[5] += this.currents[i]
+        }
 
         return circuit
       }
@@ -109,46 +116,27 @@ var lib = {}
     southArrowTop,
     eastArrowRight]
 
-    for (var i = 0; i < arrows.length - 1; i++) {
-      var element = arrows[i]._renderer.elem
-
-      $(element).hover(
-        function () {
-          $(this).addClass('arrows > path')
-        }, function () {
-        $(this).removeClass('arrows > path')
-      }
-      )
-
-      ;(function (i) {
-        $(element).on('click', function () {
-          arrows[i].flip()
-          two.update()
-        })
-      })(i)
-    }
-
     $(this.canvasContainer).append('<div class="label" id="labelI1">\\(I_1 =\\)' +
       '<input ID="inputI1" type="text" class="inputI" tabindex="1" value="' +
-      this.circuit.I1 + '"/>' + '<div class="padTopAmp">\\(A\\)</div></div>')
+      this.circuit.currents[0] + '"/>' + '<div class="padTopAmp">\\(A\\)</div></div>')
 
     $(this.canvasContainer).append('<div class="label" id="labelI2">\\(I_2 =\\)' +
       '<input ID="inputI2" type="text" class="inputI" tabindex="2" value="' +
-      this.circuit.I2 + '"/>' + '<div class="padTopAmp">\\(A\\)</div></div>')
+      this.circuit.currents[1] + '"/>' + '<div class="padTopAmp">\\(A\\)</div></div>')
 
     $(this.canvasContainer).append('<div class="label" id="labelI3">\\(I_3 =\\)' +
         '<input ID="inputI3" type="text" class="inputI" tabindex="3" value="' +
-        this.circuit.I3 + '"/>' + '<div class="padTopAmp">\\(A\\)</div></div>')
+        this.circuit.currents[2] + '"/>' + '<div class="padTopAmp">\\(A\\)</div></div>')
 
     $(this.canvasContainer).append('<div class="label" id="labelI4">\\(I_4 =\\)' +
           '<input ID="inputI4" type="text" class="inputI" tabindex="4" value="' +
-          this.circuit.I4 + '"/>' + '<div class="padTopAmp">\\(A\\)</div></div>')
+          this.circuit.currents[3] + '"/>' + '<div class="padTopAmp">\\(A\\)</div></div>')
 
     $(this.canvasContainer).append('<div class="label" id="labelI5">\\(I_5 =\\)' +
             '<input ID="inputI5" type="text" class="inputI" tabindex="5" value="' +
-            this.circuit.I5 + '"/>' + '<div class="padTopAmp">\\(A\\)</div></div>')
+            this.circuit.currents[4] + '"/>' + '<div class="padTopAmp">\\(A\\)</div></div>')
 
-    $(this.canvasContainer).append('<div class="label" id="labelI6">\\(I_6 = ' + this.circuit.I6 + 'A\\)</div>')
+    $(this.canvasContainer).append('<div class="label" id="labelI6">\\(I_6 = ' + this.circuit.currents[5] + 'A\\)</div>')
 
     $('#labelI1').css('top', (two.height / 4.4) + 'px')
                  .css('left', (two.width / 21.3) + 'px')
@@ -172,11 +160,13 @@ var lib = {}
 
     // Refresh typsetting
     MathJax.Hub.Queue(['Typeset', MathJax.Hub, 'Kirchhoff Current Law'])
+
+    return arrows
   }
 
   ns.redrawLabels = function () {
     // Edit MathJax elements directly to update values without having to re-render mathjax
-    $('#labelI6 .mjx-mrow > .mjx-mn > .mjx-char').html(this.circuit.I6.toPrecision(2))
+    $('#labelI6 .mjx-mrow > .mjx-mn > .mjx-char').html(this.circuit.currents[5].toPrecision(2))
   }
 
   ns.runApp = function (canvasContainer) {
@@ -189,14 +179,15 @@ var lib = {}
     var height1 = 650
     var two = new Two({ type: Two.Types.svg, width: width1, height: height1 }).appendTo(canvasContainer)
 
-    ns.drawCircuit(two)
+    var arrows = ns.drawCircuit(two)
+
+    var self = this
 
     // Setup event handlers for currents
-    var self = this
 
     $('#inputI1').on('input', function () {
       if (!isNaN(this.value) && this.value !== '') {
-        self.circuit.I1 = Number(this.value)
+        self.circuit.currents[0] = Number(this.value) * arrows[0].forward
         self.circuit.update()
         // Redraw labels
         ns.redrawLabels()
@@ -204,7 +195,7 @@ var lib = {}
     })
     $('#inputI2').on('input', function () {
       if (!isNaN(this.value) && this.value !== '') {
-        self.circuit.I2 = Number(this.value)
+        self.circuit.currents[1] = Number(this.value) * arrows[1].forward
         self.circuit.update()
         // Redraw labels
         ns.redrawLabels()
@@ -212,7 +203,7 @@ var lib = {}
     })
     $('#inputI3').on('input', function () {
       if (!isNaN(this.value) && this.value !== '') {
-        self.circuit.I3 = Number(this.value)
+        self.circuit.currents[2] = Number(this.value) * arrows[2].forward
         self.circuit.update()
         // Redraw labels
         ns.redrawLabels()
@@ -220,7 +211,7 @@ var lib = {}
     })
     $('#inputI4').on('input', function () {
       if (!isNaN(this.value) && this.value !== '') {
-        self.circuit.I4 = Number(this.value)
+        self.circuit.currents[3] = Number(this.value) * arrows[3].forward
         self.circuit.update()
         // Redraw labels
         ns.redrawLabels()
@@ -228,11 +219,34 @@ var lib = {}
     })
     $('#inputI5').on('input', function () {
       if (!isNaN(this.value) && this.value !== '') {
-        self.circuit.I5 = Number(this.value)
+        self.circuit.currents[4] = Number(this.value) * arrows[4].forward
         self.circuit.update()
         // Redraw labels
         ns.redrawLabels()
       }
     })
+
+    for (var i = 0; i < arrows.length - 1; i++) {
+      var element = arrows[i]._renderer.elem
+
+      $(element).hover(
+        function () {
+          $(this).addClass('arrows > path')
+        }, function () {
+        $(this).removeClass('arrows > path')
+      }
+      )
+
+      ;(function (i) {
+        $(element).on('click', function () {
+          arrows[i].flip()
+          self.circuit.currents[i] = Math.abs(self.circuit.currents[i]) * arrows[i].forward
+          two.update()
+          self.circuit.update()
+          // Redraw labels
+          ns.redrawLabels()
+        })
+      })(i)
+    }
   }
 })(lib)
