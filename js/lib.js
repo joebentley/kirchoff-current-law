@@ -53,9 +53,13 @@ var lib = {}
     arrowhead.forward = 1
 
     arrowhead.flip = function () {
-      arrowhead.rotation += Math.PI
-
-      arrowhead.forward *= -1
+      if ((arrowhead.rotation - ((Math.PI / 180) * theta)) % (2 * Math.PI) === 0) {
+        arrowhead.rotation = (Math.PI / 180) * theta + Math.PI
+        arrowhead.forward = -1
+      } else {
+        arrowhead.rotation = (Math.PI / 180) * theta
+        arrowhead.forward = 1
+      }
     }
 
     return arrowhead
@@ -64,17 +68,17 @@ var lib = {}
   ns.drawCircuit = function (two) {
     /* Make 6 lines for branches. These must insersect at a point*/
 
-    two.makeLine(0, 0, two.width / 2, two.height / 2)
+    two.makeLine(two.width / 7, two.height / 7, two.width / 2, two.height / 2)
 
-    two.makeLine(0, two.height / 2, two.width / 2, two.height / 2)
+    two.makeLine(two.width / 10, two.height / 2, two.width / 2, two.height / 2)
 
-    two.makeLine(0, two.height, two.width / 2, two.height / 2)
+    two.makeLine(two.width / 7, 6 * two.height / 7, two.width / 2, two.height / 2)
 
-    two.makeLine(two.width / 2, two.height / 2, two.width, two.height / 2)
+    two.makeLine(two.width / 2, two.height / 2, 9 * two.width / 10, two.height / 2)
 
-    two.makeLine(two.width / 2, 0, two.width / 2, two.height / 2)
+    two.makeLine(6 * two.width / 7, two.height / 7, two.width / 2, two.height / 2)
 
-    two.makeLine(two.width / 2, two.height, two.width / 2, two.height / 2)
+    two.makeLine(6 * two.width / 7, 6 * two.height / 7, two.width / 2, two.height / 2)
 
     var arrowheadLength = 10
 
@@ -94,11 +98,11 @@ var lib = {}
 
     // south arrow top
 
-    var southArrowTop = ns.makeArrowhead(two, arrowheadLength, two.width / 2, two.height / 4, 225, linewidth)
+    var southArrowTop = ns.makeArrowhead(two, arrowheadLength, 3 * two.width / 4, two.height / 4, 270, linewidth)
 
     // north arrow bottom
 
-    var northArrowBottom = ns.makeArrowhead(two, arrowheadLength, two.width / 2, 3 * two.height / 4, 45, linewidth)
+    var northArrowBottom = ns.makeArrowhead(two, arrowheadLength, 3 * two.width / 4, 3 * two.height / 4, 0, linewidth)
 
     // east arrow right
 
@@ -164,9 +168,13 @@ var lib = {}
     return arrows
   }
 
-  ns.redrawLabels = function () {
+  ns.redrawLabels = function (arrows) {
     // Edit MathJax elements directly to update values without having to re-render mathjax
-    $('#labelI6 .mjx-mrow > .mjx-mn > .mjx-char').html(this.circuit.currents[5].toPrecision(2))
+    if (arrows[5].forward === 1) {
+      $('#labelI6 .mjx-mrow > .mjx-mn > .mjx-char').html(this.circuit.currents[5].toPrecision(2))
+    } else {
+      $('#labelI6 .mjx-mrow > .mjx-mn > .mjx-char').html((-1) * this.circuit.currents[5].toPrecision(2))
+    }
   }
 
   ns.runApp = function (canvasContainer) {
@@ -189,44 +197,74 @@ var lib = {}
       if (!isNaN(this.value) && this.value !== '') {
         self.circuit.currents[0] = Number(this.value) * arrows[0].forward
         self.circuit.update()
+        if (self.circuit.currents[5] < 0) {
+          arrows[5].rotation = 315 / 180 * Math.PI
+        } else {
+          arrows[5].rotation = 135 / 180 * Math.PI
+        }
+        two.update()
         // Redraw labels
-        ns.redrawLabels()
+        ns.redrawLabels(arrows)
       }
     })
     $('#inputI2').on('input', function () {
       if (!isNaN(this.value) && this.value !== '') {
         self.circuit.currents[1] = Number(this.value) * arrows[1].forward
         self.circuit.update()
+        if (self.circuit.currents[5] < 0) {
+          arrows[5].rotation = 315 / 180 * Math.PI
+        } else {
+          arrows[5].rotation = 135 / 180 * Math.PI
+        }
+        two.update()
         // Redraw labels
-        ns.redrawLabels()
+        ns.redrawLabels(arrows)
       }
     })
     $('#inputI3').on('input', function () {
       if (!isNaN(this.value) && this.value !== '') {
         self.circuit.currents[2] = Number(this.value) * arrows[2].forward
         self.circuit.update()
+        if (self.circuit.currents[5] < 0) {
+          arrows[5].rotation = 315 / 180 * Math.PI
+        } else {
+          arrows[5].rotation = 135 / 180 * Math.PI
+        }
+        two.update()
         // Redraw labels
-        ns.redrawLabels()
+        ns.redrawLabels(arrows)
       }
     })
     $('#inputI4').on('input', function () {
       if (!isNaN(this.value) && this.value !== '') {
         self.circuit.currents[3] = Number(this.value) * arrows[3].forward
         self.circuit.update()
+        if (self.circuit.currents[5] < 0) {
+          arrows[5].rotation = 315 / 180 * Math.PI
+        } else {
+          arrows[5].rotation = 135 / 180 * Math.PI
+        }
+        two.update()
         // Redraw labels
-        ns.redrawLabels()
+        ns.redrawLabels(arrows)
       }
     })
     $('#inputI5').on('input', function () {
       if (!isNaN(this.value) && this.value !== '') {
         self.circuit.currents[4] = Number(this.value) * arrows[4].forward
         self.circuit.update()
+        if (self.circuit.currents[5] < 0) {
+          arrows[5].rotation = 315 / 180 * Math.PI
+        } else {
+          arrows[5].rotation = 135 / 180 * Math.PI
+        }
+        two.update()
         // Redraw labels
-        ns.redrawLabels()
+        ns.redrawLabels(arrows)
       }
     })
 
-    for (var i = 0; i < arrows.length - 1; i++) {
+    for (var i = 0; i < arrows.length; i++) {
       var element = arrows[i]._renderer.elem
 
       $(element).hover(
@@ -240,11 +278,13 @@ var lib = {}
       ;(function (i) {
         $(element).on('click', function () {
           arrows[i].flip()
-          self.circuit.currents[i] = Math.abs(self.circuit.currents[i]) * arrows[i].forward
+          if (i !== arrows.length - 1) {
+            self.circuit.currents[i] = ($('#inputI' + (i + 1)).val()) * arrows[i].forward
+            self.circuit.update()
+          }
           two.update()
-          self.circuit.update()
           // Redraw labels
-          ns.redrawLabels()
+          ns.redrawLabels(arrows)
         })
       })(i)
     }
