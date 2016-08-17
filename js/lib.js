@@ -3,6 +3,7 @@
 var lib = {}
 
 ;(function (ns) {
+  // Make a function to calculate currents
   ns.Circuit = function (I1, I2, I3, I4, I5) {
     var circuit = {
       currents: [
@@ -14,7 +15,7 @@ var lib = {}
         0
       ],
 
-      // Update circuit variables
+      // Update value of I6
       update: function () {
         this.currents[5] = 0
 
@@ -30,6 +31,8 @@ var lib = {}
 
     return circuit
   }
+
+// Make a function to draw the arrowheads
 
   ns.makeArrowhead = function (two, length, x, y, theta, lwidth) {
     var horizontalArrowhead = two.makeLine(0, 0, length, 0)
@@ -52,6 +55,8 @@ var lib = {}
 
     arrowhead.forward = 1
 
+    /*flip() will rotate the arrow by pi and change the value of forward such that forward is 1 when the arrowhead
+    is unchanged from its original position and -1 when not*/
     arrowhead.flip = function () {
       if ((arrowhead.rotation - ((Math.PI / 180) * theta)) % (2 * Math.PI) === 0) {
         arrowhead.rotation = (Math.PI / 180) * theta + Math.PI
@@ -65,60 +70,65 @@ var lib = {}
     return arrowhead
   }
 
+  // Make a LARGE function to draw the circuit
+
   ns.drawCircuit = function (two) {
     /* Make 6 lines for branches. These must insersect at a point*/
 
+    //Top left line
     two.makeLine(two.width / 7, two.height / 7, two.width / 2, two.height / 2)
 
+    //Middle left line
     two.makeLine(two.width / 10, two.height / 2, two.width / 2, two.height / 2)
 
+    //Bottom left line
     two.makeLine(two.width / 7, 6 * two.height / 7, two.width / 2, two.height / 2)
 
+    //Middle right line
     two.makeLine(two.width / 2, two.height / 2, 9 * two.width / 10, two.height / 2)
 
+    //Top right line
     two.makeLine(6 * two.width / 7, two.height / 7, two.width / 2, two.height / 2)
 
+    //Bottom right line
     two.makeLine(6 * two.width / 7, 6 * two.height / 7, two.width / 2, two.height / 2)
 
+    //Length of each of the two lines making up the arrowhead
     var arrowheadLength = 10
 
+    //Width of each of the two lines making up the arrowhead
     var linewidth = 1.5
 
-    // southeast arrow:
-
+    //Southeast arrow
     var southeastArrow = ns.makeArrowhead(two, arrowheadLength, two.width / 4, two.height / 4, 180, linewidth)
 
-    // left east arrow
-
+    //Left east arrow
     var leftEastArrow = ns.makeArrowhead(two, arrowheadLength, two.width / 4, two.height / 2, 135, linewidth)
 
-    // northeast arrow
-
+    //Northeast arrow
     var northeastArrow = ns.makeArrowhead(two, arrowheadLength, two.width / 4, 3 * two.height / 4, 90, linewidth)
 
-    // south arrow top
+    //Southwest arrow
+    var southwestArrow = ns.makeArrowhead(two, arrowheadLength, 3 * two.width / 4, two.height / 4, 270, linewidth)
 
-    var southArrowTop = ns.makeArrowhead(two, arrowheadLength, 3 * two.width / 4, two.height / 4, 270, linewidth)
+    //Northwest arrow
+    var northwestArrow = ns.makeArrowhead(two, arrowheadLength, 3 * two.width / 4, 3 * two.height / 4, 0, linewidth)
 
-    // north arrow bottom
-
-    var northArrowBottom = ns.makeArrowhead(two, arrowheadLength, 3 * two.width / 4, 3 * two.height / 4, 0, linewidth)
-
-    // east arrow right
-
+    //East arrow right
     var eastArrowRight = ns.makeArrowhead(two, arrowheadLength, 3 * two.width / 4, two.height / 2, 135, linewidth)
 
     two.update()
 
-    // hide all arrows pointing away from the node
-
+    //Make an array of the arrows to reference the elements below
     var arrows =
     [southeastArrow,
     leftEastArrow,
     northeastArrow,
-    northArrowBottom,
-    southArrowTop,
+    northwestArrow,
+    southwestArrow,
     eastArrowRight]
+
+    // Setup the input boxes and labels using jQuery
 
     $(this.canvasContainer).append('<div class="label" id="labelI1">\\(I_1 =\\)' +
       '<input ID="inputI1" type="text" class="inputI" tabindex="1" value="' +
@@ -141,6 +151,8 @@ var lib = {}
             this.circuit.currents[4] + '"/>' + '<div class="padTopAmp">\\(A\\)</div></div>')
 
     $(this.canvasContainer).append('<div class="label" id="labelI6">\\(I_6 = ' + this.circuit.currents[5] + 'A\\)</div>')
+
+    // Add CSS for the labels through jQuery
 
     $('#labelI1').css('top', (two.height / 4.4) + 'px')
                  .css('left', (two.width / 21.3) + 'px')
@@ -169,7 +181,7 @@ var lib = {}
   }
 
   ns.redrawLabels = function (arrows) {
-    // Edit MathJax elements directly to update values without having to re-render mathjax
+    // Edit MathJax elements directly to update value of I6 without having to re-render mathjax
     if (arrows[5].forward === 1) {
       $('#labelI6 .mjx-mrow > .mjx-mn > .mjx-char').html(this.circuit.currents[5].toPrecision(2))
     } else {
@@ -203,7 +215,7 @@ var lib = {}
           arrows[5].rotation = 135 / 180 * Math.PI
         }
         two.update()
-        // Redraw labels
+        //Re-write the value of I6 onto the screen
         ns.redrawLabels(arrows)
       }
     })
@@ -217,7 +229,7 @@ var lib = {}
           arrows[5].rotation = 135 / 180 * Math.PI
         }
         two.update()
-        // Redraw labels
+        //Re-write the value of I6 onto the screen
         ns.redrawLabels(arrows)
       }
     })
@@ -231,7 +243,7 @@ var lib = {}
           arrows[5].rotation = 135 / 180 * Math.PI
         }
         two.update()
-        // Redraw labels
+        //Re-write the value of I6 onto the screen
         ns.redrawLabels(arrows)
       }
     })
@@ -245,7 +257,7 @@ var lib = {}
           arrows[5].rotation = 135 / 180 * Math.PI
         }
         two.update()
-        // Redraw labels
+        //Re-write the value of I6 onto the screen
         ns.redrawLabels(arrows)
       }
     })
@@ -259,10 +271,12 @@ var lib = {}
           arrows[5].rotation = 135 / 180 * Math.PI
         }
         two.update()
-        // Redraw labels
+        //Re-write the value of I6 onto the screen
         ns.redrawLabels(arrows)
       }
     })
+
+    // Setup click and hover actions for the arrowheads, ._renderer.elem is the direct two.js arrowhead group
 
     for (var i = 0; i < arrows.length; i++) {
       var element = arrows[i]._renderer.elem
@@ -283,7 +297,7 @@ var lib = {}
             self.circuit.update()
           }
           two.update()
-          // Redraw labels
+          //Re-write the value of I6 onto the screen
           ns.redrawLabels(arrows)
         })
       })(i)
