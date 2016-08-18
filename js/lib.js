@@ -214,11 +214,6 @@ var lib = {}
       if (!isNaN(this.value) && this.value !== '') {
         self.circuit.currents[0] = Number(this.value) * arrows[0].forward
         self.circuit.update()
-        /*if (self.circuit.currents[5] < 0) {
-          arrows[5].rotation = 315 / 180 * Math.PI
-        } else {
-          arrows[5].rotation = 135 / 180 * Math.PI
-        }*/
         two.update()
         //Re-write the value of I6 onto the screen
         ns.redrawLabels(arrows)
@@ -228,11 +223,6 @@ var lib = {}
       if (!isNaN(this.value) && this.value !== '') {
         self.circuit.currents[1] = Number(this.value) * arrows[1].forward
         self.circuit.update()
-        /*if (self.circuit.currents[5] < 0) {
-          arrows[5].rotation = 315 / 180 * Math.PI
-        } else {
-          arrows[5].rotation = 135 / 180 * Math.PI
-        }*/
         two.update()
         //Re-write the value of I6 onto the screen
         ns.redrawLabels(arrows)
@@ -242,11 +232,6 @@ var lib = {}
       if (!isNaN(this.value) && this.value !== '') {
         self.circuit.currents[2] = Number(this.value) * arrows[2].forward
         self.circuit.update()
-        /*if (self.circuit.currents[5] < 0) {
-          arrows[5].rotation = 315 / 180 * Math.PI
-        } else {
-          arrows[5].rotation = 135 / 180 * Math.PI
-        }*/
         two.update()
         //Re-write the value of I6 onto the screen
         ns.redrawLabels(arrows)
@@ -256,11 +241,6 @@ var lib = {}
       if (!isNaN(this.value) && this.value !== '') {
         self.circuit.currents[3] = Number(this.value) * arrows[3].forward
         self.circuit.update()
-        /*if (self.circuit.currents[5] < 0) {
-          arrows[5].rotation = 315 / 180 * Math.PI
-        } else {
-          arrows[5].rotation = 135 / 180 * Math.PI
-        }*/
         two.update()
         //Re-write the value of I6 onto the screen
         ns.redrawLabels(arrows)
@@ -270,11 +250,6 @@ var lib = {}
       if (!isNaN(this.value) && this.value !== '') {
         self.circuit.currents[4] = Number(this.value) * arrows[4].forward
         self.circuit.update()
-        /*if (self.circuit.currents[5] < 0) {
-          arrows[5].rotation = 315 / 180 * Math.PI
-        } else {
-          arrows[5].rotation = 135 / 180 * Math.PI
-        }*/
         two.update()
         //Re-write the value of I6 onto the screen
         ns.redrawLabels(arrows)
