@@ -117,6 +117,11 @@ var lib = {}
     //East arrow right
     var eastArrowRight = ns.makeArrowhead(two, arrowheadLength, 3 * two.width / 4, two.height / 2, 135, linewidth)
 
+    //Make a filled circle to represent the node
+    var nodeCircle = two.makeCircle(two.width / 2, two.height / 2, two.width / 100)
+
+    nodeCircle.fill = 'black'
+
     two.update()
 
     //Make an array of the arrows to reference the elements below
@@ -183,9 +188,9 @@ var lib = {}
   ns.redrawLabels = function (arrows) {
     // Edit MathJax elements directly to update value of I6 without having to re-render mathjax
     if (arrows[5].forward === 1) {
-      $('#labelI6 .mjx-mrow > .mjx-mn > .mjx-char').html(this.circuit.currents[5].toPrecision(2))
+      $('#labelI6 .mjx-mrow > .mjx-mn > .mjx-char').html((1 * this.circuit.currents[5].toPrecision(2)).toString())
     } else {
-      $('#labelI6 .mjx-mrow > .mjx-mn > .mjx-char').html((-1) * this.circuit.currents[5].toPrecision(2))
+      $('#labelI6 .mjx-mrow > .mjx-mn > .mjx-char').html(((-1.0) * this.circuit.currents[5].toPrecision(2)).toString())
     }
   }
 
@@ -209,11 +214,11 @@ var lib = {}
       if (!isNaN(this.value) && this.value !== '') {
         self.circuit.currents[0] = Number(this.value) * arrows[0].forward
         self.circuit.update()
-        if (self.circuit.currents[5] < 0) {
+        /*if (self.circuit.currents[5] < 0) {
           arrows[5].rotation = 315 / 180 * Math.PI
         } else {
           arrows[5].rotation = 135 / 180 * Math.PI
-        }
+        }*/
         two.update()
         //Re-write the value of I6 onto the screen
         ns.redrawLabels(arrows)
@@ -223,11 +228,11 @@ var lib = {}
       if (!isNaN(this.value) && this.value !== '') {
         self.circuit.currents[1] = Number(this.value) * arrows[1].forward
         self.circuit.update()
-        if (self.circuit.currents[5] < 0) {
+        /*if (self.circuit.currents[5] < 0) {
           arrows[5].rotation = 315 / 180 * Math.PI
         } else {
           arrows[5].rotation = 135 / 180 * Math.PI
-        }
+        }*/
         two.update()
         //Re-write the value of I6 onto the screen
         ns.redrawLabels(arrows)
@@ -237,11 +242,11 @@ var lib = {}
       if (!isNaN(this.value) && this.value !== '') {
         self.circuit.currents[2] = Number(this.value) * arrows[2].forward
         self.circuit.update()
-        if (self.circuit.currents[5] < 0) {
+        /*if (self.circuit.currents[5] < 0) {
           arrows[5].rotation = 315 / 180 * Math.PI
         } else {
           arrows[5].rotation = 135 / 180 * Math.PI
-        }
+        }*/
         two.update()
         //Re-write the value of I6 onto the screen
         ns.redrawLabels(arrows)
@@ -251,11 +256,11 @@ var lib = {}
       if (!isNaN(this.value) && this.value !== '') {
         self.circuit.currents[3] = Number(this.value) * arrows[3].forward
         self.circuit.update()
-        if (self.circuit.currents[5] < 0) {
+        /*if (self.circuit.currents[5] < 0) {
           arrows[5].rotation = 315 / 180 * Math.PI
         } else {
           arrows[5].rotation = 135 / 180 * Math.PI
-        }
+        }*/
         two.update()
         //Re-write the value of I6 onto the screen
         ns.redrawLabels(arrows)
@@ -265,11 +270,11 @@ var lib = {}
       if (!isNaN(this.value) && this.value !== '') {
         self.circuit.currents[4] = Number(this.value) * arrows[4].forward
         self.circuit.update()
-        if (self.circuit.currents[5] < 0) {
+        /*if (self.circuit.currents[5] < 0) {
           arrows[5].rotation = 315 / 180 * Math.PI
         } else {
           arrows[5].rotation = 135 / 180 * Math.PI
-        }
+        }*/
         two.update()
         //Re-write the value of I6 onto the screen
         ns.redrawLabels(arrows)
