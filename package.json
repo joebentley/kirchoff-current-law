@@ -4,7 +4,9 @@
   "description": "This is a interactive visualisation of Kirchhoff's Current Law.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "fix": "node_modules/.bin/eslint --fix . || true",
+    "lint": "node_modules/.bin/eslint . || true"
   },
   "repository": {
     "type": "git",
